@@ -29,6 +29,5 @@ export const apiPaths = {
     profilesUrl: '/profiles',
     userRoleUrl: '/user-permissions',
     permissionsUrl: '/permissions',
-    getEmployeesUrl: '/employees',
-    postEmployeeUrl: '/employees/'
+    employeesUrl: '/employees',
 };

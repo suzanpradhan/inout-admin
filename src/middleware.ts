@@ -5,6 +5,7 @@ export async function middleware(req: any) {
     const token = await getToken({ req, secret: process.env.JWT_SECRET });
 
     const { pathname } = req.nextUrl;
+    console.log("mddle ware running")
 
     if (req.nextUrl.pathname.startsWith('/_next/')) {
         return true;
@@ -45,5 +46,5 @@ export async function middleware(req: any) {
 
 export const config = {
     // matcher: ['/', '/login', '/register', '/dashboard/:path*'],
-    matcher: ['/dashboard/:path*', '/login'],
+    matcher: ['/', '/dashboard/:path*', '/login'],
 };

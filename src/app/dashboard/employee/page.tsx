@@ -1,5 +1,3 @@
-'use client';
-
 import { EmployeeTable } from './(components)/EmployeeTable';
 import RearrangeEmployeeOrder from './(components)/RearrangeEmployeeOrder';
 

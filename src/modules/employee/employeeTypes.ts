@@ -7,12 +7,22 @@ export const employeeSchema = z.object({
     }),
     is_staff: z.boolean().optional().default(true),
 });
-export type EmploueeDetailType = z.infer<typeof employeeSchema>;
+export type EmployeeDetailType = z.infer<typeof employeeSchema>;
 
 export interface EmployeeFormType {
-    order?: string | null;
+    id?: number;
+    order?: string;
     fullname?: string;
     is_staff?: boolean;
+}
+
+export const employeeDeleteDetailSchema = z.object({
+    id: z.number().optional(),
+});
+export type EmployeeDeleteDetailSchema = z.infer<typeof employeeDeleteDetailSchema>;
+
+export interface EmployeeDeleteFormType {
+    id: number;
 }
 
 

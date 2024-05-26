@@ -30,7 +30,7 @@ export function AsideEmployeeSheet({
     | null
     | undefined;
   btnClassName?: string;
-  btnLable?: string | JSX.Element;
+  btnLable?: string | React.JSX.Element;
   btnSize?: 'default' | 'sm' | 'lg' | 'icon' | null | undefined;
   sheetTitle?: string;
   sheetDesc?: string;

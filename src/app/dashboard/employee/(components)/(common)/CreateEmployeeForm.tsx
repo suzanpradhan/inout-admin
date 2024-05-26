@@ -45,10 +45,11 @@ export function CreateEmployeeForm() {
   const onSubmit = async (data: EmployeeFormType) => {
     setIsLoading(true);
     try {
-      const responseData = await Promise.resolve(
+      await Promise.resolve(
         dispatch(
           employeeApi.endpoints.postEmployee.initiate({
             fullname: data.fullname,
+            order: data.order,
           })
         )
       );
@@ -95,9 +96,6 @@ export function CreateEmployeeForm() {
               <FormControl>
                 <Input placeholder="1" type="number" min={1} {...field} />
               </FormControl>
-              {/* <FormDescription>
-                This is employee public display name.
-              </FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
@@ -121,7 +119,16 @@ export function CreateEmployeeForm() {
           variant="default"
           className="w-full h-12 uppercase"
         >
-          Create New Employee
+          {isLoading ? (
+            <div className="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          ) : (
+            'Create New Employee'
+          )}
         </Button>
       </form>
     </Form>

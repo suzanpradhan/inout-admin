@@ -14,7 +14,7 @@ import { AlertDialog } from './AlertDialog';
 
 interface MenuItem {
   label: string;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
   link?: string;
   subItems?: { label: string; link: string }[];
   badge?: string;

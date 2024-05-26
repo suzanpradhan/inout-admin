@@ -103,7 +103,16 @@ export function LoginFormShdcn() {
           variant="default"
           className="w-full h-12 uppercase"
         >
-          Login
+          {isLoading ? (
+            <div className="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          ) : (
+            'Login'
+          )}
         </Button>
       </form>
     </Form>
