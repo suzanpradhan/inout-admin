@@ -2,7 +2,7 @@
 
 import { z } from 'zod';
 
-import { SelectInput } from '@/app/(dashboard)/(components)/(common)/SelectInput';
+import { SelectInput } from '@/app/dashboard/(components)/(common)/SelectInput';
 import { Button } from '@/components/ui/button';
 import {
   Form,

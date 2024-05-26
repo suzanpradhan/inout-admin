@@ -25,7 +25,7 @@ const menuItems: MenuItem[] = [
   {
     label: 'Dashboard',
     icon: <HiChartPie size={24} />,
-    link: '/',
+    link: '/dashboard',
     subItems: [],
   },
   {
@@ -34,18 +34,18 @@ const menuItems: MenuItem[] = [
     subItems: [
       {
         label: 'Employee List',
-        link: '/employee',
+        link: '/dashboard/employee',
       },
       {
         label: 'Add new employee',
-        link: '/employee/create',
+        link: '/dashboard/employee/create',
       },
     ],
   },
   {
     label: 'Settings',
     icon: <RiSettingsFill size={24} />,
-    link: '/settings',
+    link: '/dashboard/settings',
     badge: 'Pro',
     subItems: [],
   },

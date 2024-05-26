@@ -1,0 +1,68 @@
+import { EmployeeDataType } from "./employeeTypes";
+
+export const mockEmployeeData: EmployeeDataType[] = [
+    {
+        id: 1,
+        order: 3,
+        fullname: 'Niwesh Shrestha',
+        positions: [{ id: 1, name: 'Teacher' }],
+        status: true,
+        is_staff: true,
+    },
+    {
+        id: 2,
+        order: 2,
+        fullname: 'Saroj Khanal',
+        positions: [{ id: 1, name: 'Teacher' }],
+        status: true,
+        is_staff: true,
+    },
+    {
+        id: 3,
+        order: 4,
+        fullname: 'Sujan Pradhan',
+        positions: [{ id: 1, name: 'Teacher' }],
+        status: false,
+        is_staff: true,
+    },
+    {
+        id: 4,
+        order: 5,
+        fullname: 'Pratik Joshi',
+        positions: [{ id: 1, name: 'Teacher' }],
+        status: true,
+        is_staff: true,
+    },
+    {
+        id: 5,
+        order: 6,
+        fullname: 'Avishek Dahal',
+        positions: [{ id: 1, name: 'Teacher' }],
+        status: true,
+        is_staff: true,
+    },
+    {
+        id: 6,
+        order: 7,
+        fullname: 'Basant Bushal',
+        positions: [{ id: 1, name: 'Teacher' }],
+        status: true,
+        is_staff: true,
+    },
+    {
+        id: 7,
+        order: 8,
+        fullname: 'Surakhxa Mishra',
+        positions: [{ id: 1, name: 'Teacher' }],
+        status: true,
+        is_staff: true,
+    },
+    {
+        id: 8,
+        order: 1,
+        fullname: 'Dol Raj Ghimire',
+        positions: [{ id: 1, name: 'Teacher' }],
+        status: false,
+        is_staff: true,
+    },
+];
