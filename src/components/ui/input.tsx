@@ -1,12 +1,19 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { FieldConfig, FieldInputProps } from 'formik';
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  getFieldProps: (
+    nameOrOptions: string | FieldConfig<any>
+  ) => FieldInputProps<any>;
+  name: string;
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, type, getFieldProps, ...props }, ref) => {
+    console.log(props.value);
     return (
       <input
         type={type}
@@ -16,6 +23,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         ref={ref}
         {...props}
+        {...getFieldProps(props.name)}
+        // value={props.value}
       />
     );
   }

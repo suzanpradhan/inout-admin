@@ -2,7 +2,6 @@
 
 import { CreateEmployeeForm } from '../(components)/(common)/CreateEmployeeForm';
 
-const product = ['samsung', 'toshiba', 'hp', 'lenovo', 'mac'];
 export default function EmployeeCreate() {
   return (
     <div className="mb-10">

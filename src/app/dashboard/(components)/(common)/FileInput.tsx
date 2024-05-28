@@ -1,37 +1,38 @@
 // components/FileInput.tsx
-import React, { useState } from 'react';
+import { FieldConfig, FieldInputProps } from 'formik';
+import React from 'react';
 
 interface FileInputProps {
-  onChange: (file: File | null) => void;
+  getFieldProps: (
+    nameOrOptions: string | FieldConfig<any>
+  ) => FieldInputProps<any>;
+  name: string;
+  value: File | null | undefined | string;
+  id: string;
 }
 
-const FileInput: React.FC<FileInputProps> = ({ onChange }) => {
-  const [fileName, setFileName] = useState<string>('No file selected');
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] || null;
-    if (file) {
-      setFileName(file.name);
-    } else {
-      setFileName('No file selected');
-    }
-    onChange(file);
-  };
+const FileInput: React.FC<FileInputProps> = ({
+  getFieldProps,
+  name,
+  value,
+  id,
+}) => {
+  console.log(typeof value);
 
   return (
     <div className="relative w-full">
       <input
         type="file"
-        id="fileInput"
+        id={id}
         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50"
-        onChange={handleFileChange}
+        {...getFieldProps(name)}
       />
       <div className="flex items-center bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2">
-        <span id="fileName" className="text-gray-500">
-          {fileName}
+        <span id="fileName" className="text-gray-500 font-normal text-sm">
+          {typeof value === 'string' && value}
         </span>
         <label
-          htmlFor="fileInput"
+          htmlFor={id}
           className="ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded cursor-pointer"
         >
           Browse

@@ -1,8 +1,5 @@
-'use client';
-
 import { SettingsForm } from './(components)/SettingsForm';
 
-const product = ['samsung', 'toshiba', 'hp', 'lenovo', 'mac'];
 export default function Settings() {
   return (
     <div className="mb-10">
@@ -12,7 +9,7 @@ export default function Settings() {
       <div className="grid grid-cols-12 gap-y-3 gap-x-10">
         <div className="col-span-8">
           <h4 className="text-md font-medium text-slate-400 mb-4">
-            Setup your site informations
+            Setup your site information
           </h4>
           <div className="bg-slate-50 rounded-md shadow-md px-5 py-4">
             <SettingsForm />

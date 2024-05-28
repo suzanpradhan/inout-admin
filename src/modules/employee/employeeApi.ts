@@ -1,18 +1,19 @@
 import { apiPaths } from '@/core/api/apiConstants';
 import { baseApi } from '@/core/api/apiQuery';
+import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { toast } from 'react-toastify';
-import { EmployeeDataType, EmployeeDeleteFormType, EmployeeFormType } from './employeeTypes';
+import { EmployeeDataType, EmployeeDeleteFormType, EmployeeDetailType } from './employeeTypes';
 
 const employeeApi = baseApi
     .enhanceEndpoints({ addTagTypes: ['Employees'] })
     .injectEndpoints({
         endpoints: (builder) => ({
-            getEmployees: builder.query<EmployeeDataType[], void>({
-                query: () => `${apiPaths.employeesUrl}`,
-                providesTags: (result) =>
-                    result
+            getEmployees: builder.query<PaginatedResponseType<EmployeeDataType>, number>({
+                query: (arg) => `${apiPaths.employeesUrl}?page=${arg}`,
+                providesTags: (response) =>
+                    response
                         ? [
-                            ...result.map(({ id }) => ({ type: 'Employees', id } as const)),
+                            ...response.results.map(({ id }) => ({ type: 'Employees', id } as const)),
                             { type: 'Employees', id: 'LIST' },
                         ]
                         : [{ type: 'Employees', id: 'LIST' }],
@@ -24,10 +25,10 @@ const employeeApi = baseApi
                 },
                 transformResponse: (response: any) => {
                     // console.log(response);
-                    return response as EmployeeDataType[];
+                    return response as PaginatedResponseType<EmployeeDataType>;
                 },
             }),
-            postEmployee: builder.mutation<EmployeeDataType, EmployeeFormType>({
+            postEmployee: builder.mutation<EmployeeDataType, EmployeeDetailType>({
                 query: ({ ...payload }) => {
                     var formData = new FormData();
                     formData.append('order', payload.order?.toString() ?? "");
@@ -55,7 +56,7 @@ const employeeApi = baseApi
                     return response as any;
                 },
             }),
-            updateEmployee: builder.mutation<EmployeeDataType, EmployeeFormType>({
+            updateEmployee: builder.mutation<EmployeeDataType, EmployeeDetailType>({
                 query: ({ ...payload }) => ({
                     url: `${apiPaths.employeesUrl}/${payload.id}/`,
                     method: 'PATCH',
@@ -71,7 +72,7 @@ const employeeApi = baseApi
                         toast.error('Failed updating employee.');
                     }
                 },
-                invalidatesTags: ['Employees'],
+                invalidatesTags: (result, error, { id }) => [{ type: 'Employees', id }],
             }),
             deleteEmployee: builder.mutation<any, EmployeeDeleteFormType>({
                 query: ({ ...payload }) => {

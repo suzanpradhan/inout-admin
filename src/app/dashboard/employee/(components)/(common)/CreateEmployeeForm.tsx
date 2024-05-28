@@ -1,106 +1,106 @@
 'use client';
 
-import { z } from 'zod';
+import { ZodError } from 'zod';
 
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useAppDispatch } from '@/core/redux/hooks';
 import employeeApi from '@/modules/employee/employeeApi';
 import {
-  EmployeeFormType,
+  EmployeeDetailType,
   employeeSchema,
 } from '@/modules/employee/employeeTypes';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useFormik } from 'formik';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-
-// const formSchema = z.object({
-//   fullName: z.string().min(2, {
-//     message: 'Fullname must be at least 4 characters.',
-//   }),
-//   position: z.string().optional(),
-// });
 
 export function CreateEmployeeForm() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<z.infer<typeof employeeSchema>>({
-    resolver: zodResolver(employeeSchema),
-    defaultValues: {
-      order: '',
-      fullname: '',
-      is_staff: true,
-    },
-  });
 
-  const onSubmit = async (data: EmployeeFormType) => {
-    setIsLoading(true);
+  const validateForm = (values: EmployeeDetailType) => {
     try {
-      await Promise.resolve(
-        dispatch(
-          employeeApi.endpoints.postEmployee.initiate({
-            fullname: data.fullname,
-            order: data.order,
-          })
-        )
-      );
-      setIsLoading(false);
-      // formik.resetForm();
+      employeeSchema.parse(values);
     } catch (error) {
-      console.log(error);
+      if (error instanceof ZodError) {
+        console.log(error);
+        return error.formErrors.fieldErrors;
+      }
     }
   };
 
-  const handleSubmit = (data: z.infer<typeof employeeSchema>) => {
-    onSubmit(data);
+  const onSubmit = async (data: EmployeeDetailType) => {
+    setIsLoading(true);
+    try {
+      const responseData = await Promise.resolve(
+        dispatch(employeeApi.endpoints.postEmployee.initiate(data))
+      );
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
 
+  const formik = useFormik<EmployeeDetailType>({
+    enableReinitialize: true,
+
+    initialValues: {
+      order: undefined,
+      fullname: '',
+      is_staff: true,
+    },
+    validateOnChange: false,
+    validate: validateForm,
+    onSubmit,
+  });
+
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        formik.handleSubmit(e);
+      }}
+      className="space-y-8"
+    >
+      <div>
+        <label
+          htmlFor="fullname"
+          className="text-sm font-semibold text-slate-600 inline-block mb-2"
+        >
+          Employee Name
+        </label>
+        <Input
+          placeholder="What is your employee name?"
+          type="text"
+          getFieldProps={formik.getFieldProps}
           name="fullname"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Full Name</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="What is your employee name?"
-                  type="text"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                This is employee public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
+          id="fullname"
         />
-        <FormField
-          control={form.control}
+        <span className="text-xs text-red-400 font-medium">
+          {formik.errors.fullname}
+        </span>
+      </div>
+
+      <div>
+        <label
+          htmlFor="order"
+          className="text-sm font-semibold text-slate-600 inline-block mb-2"
+        >
+          Order no.
+        </label>
+        <Input
+          placeholder="1"
+          type="number"
+          min={1}
+          getFieldProps={formik.getFieldProps}
           name="order"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Order Number</FormLabel>
-              <FormControl>
-                <Input placeholder="1" type="number" min={1} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          id="order"
         />
-        {/* <FormField
+        <span className="text-xs text-red-400 font-medium">
+          {formik.errors.order}
+        </span>
+      </div>
+
+      {/* <FormField
           control={form.control}
           name="positions"
           render={({ field }) => (
@@ -114,23 +114,18 @@ export function CreateEmployeeForm() {
             </FormItem>
           )}
         /> */}
-        <Button
-          type="submit"
-          variant="default"
-          className="w-full h-12 uppercase"
-        >
-          {isLoading ? (
-            <div className="lds-ellipsis">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-          ) : (
-            'Create New Employee'
-          )}
-        </Button>
-      </form>
-    </Form>
+      <Button type="submit" variant="default" className="w-full h-12 uppercase">
+        {isLoading ? (
+          <div className="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        ) : (
+          'Create New Employee'
+        )}
+      </Button>
+    </form>
   );
 }

@@ -1,7 +1,8 @@
 import { z } from "zod";
 
 export const employeeSchema = z.object({
-    order: z.string().optional(),
+    id: z.number().optional(),
+    order: z.number().optional(),
     fullname: z.string().min(4, {
         message: 'Fullname must be at least 4 characters.',
     }),
@@ -9,12 +10,12 @@ export const employeeSchema = z.object({
 });
 export type EmployeeDetailType = z.infer<typeof employeeSchema>;
 
-export interface EmployeeFormType {
-    id?: number;
-    order?: string;
-    fullname?: string;
-    is_staff?: boolean;
-}
+// export interface EmployeeFormType {
+//     id?: number;
+//     order?: string;
+//     fullname?: string;
+//     is_staff?: boolean;
+// }
 
 export const employeeDeleteDetailSchema = z.object({
     id: z.number().optional(),
