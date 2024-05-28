@@ -12,7 +12,7 @@ import {
 import { signOut } from 'next-auth/react';
 import { AiOutlineLogout } from 'react-icons/ai';
 
-export function AlertDialog({ children }: { children: React.ReactNode }) {
+export function AlertLogoutDialog({ children }: { children: React.ReactNode }) {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>

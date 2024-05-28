@@ -10,7 +10,7 @@ import { AiOutlineLogout } from 'react-icons/ai';
 import { BiSolidUserAccount } from 'react-icons/bi';
 import { HiChartPie } from 'react-icons/hi2';
 import { RiArrowDropDownLine, RiSettingsFill } from 'react-icons/ri';
-import { AlertDialog } from './AlertDialog';
+import { AlertLogoutDialog } from './AlertLogoutDialog';
 
 interface MenuItem {
   label: string;
@@ -133,7 +133,7 @@ const MainMenu: React.FC = () => {
                 ) : item.alertDialog ? (
                   <>
                     <Separator className="my-4" />
-                    <AlertDialog>
+                    <AlertLogoutDialog>
                       <Button
                         variant="link"
                         className="p-0 flex items-center text-red-600 hover:text-red-900 group"
@@ -145,7 +145,7 @@ const MainMenu: React.FC = () => {
                           {item.label}
                         </span>
                       </Button>
-                    </AlertDialog>
+                    </AlertLogoutDialog>
                   </>
                 ) : (
                   <Link

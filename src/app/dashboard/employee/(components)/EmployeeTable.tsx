@@ -16,6 +16,7 @@ import employeeApi from '@/modules/employee/employeeApi';
 import { EmployeeDataType } from '@/modules/employee/employeeTypes';
 import { useEffect, useState } from 'react';
 import { CiEdit, CiTrash } from 'react-icons/ci';
+import { AlertDeleteDialog } from '../../(components)/(common)/AlertDeleteDialog';
 import { AsideEmployeeSheet } from '../../(components)/(common)/AsideEmployeeSheet';
 import PaginationLinks from '../../(components)/(common)/PaginationLinks';
 import { UpdateEmployeeForm } from './(common)/UpdateEmployeeForm';
@@ -89,16 +90,18 @@ export function EmployeeTable() {
                   >
                     <UpdateEmployeeForm data={employee} />
                   </AsideEmployeeSheet>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="text-red-400 hover:bg-red-100"
-                    onClick={() => {
-                      handleDelete(employee.id!);
-                    }}
+                  <AlertDeleteDialog
+                    handleClick={handleDelete}
+                    uid={employee.id!}
                   >
-                    <CiTrash />
-                  </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="text-red-400 hover:bg-red-100"
+                    >
+                      <CiTrash />
+                    </Button>
+                  </AlertDeleteDialog>
                 </TableCell>
               </TableRow>
             ))}
