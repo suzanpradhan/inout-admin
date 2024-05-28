@@ -14,7 +14,7 @@ import { RootState } from '@/core/redux/store';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import employeeApi from '@/modules/employee/employeeApi';
 import { EmployeeDataType } from '@/modules/employee/employeeTypes';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { CiEdit, CiTrash } from 'react-icons/ci';
 import { AsideEmployeeSheet } from '../../(components)/(common)/AsideEmployeeSheet';
 import PaginationLinks from '../../(components)/(common)/PaginationLinks';
@@ -24,9 +24,10 @@ import { UpdateEmployeeForm } from './(common)/UpdateEmployeeForm';
 
 export function EmployeeTable() {
   const dispatch = useAppDispatch();
+  const [isPage, setIsPage] = useState(1);
   useEffect(() => {
-    dispatch(employeeApi.endpoints.getEmployees.initiate(1));
-  }, [dispatch]);
+    dispatch(employeeApi.endpoints.getEmployees.initiate(isPage));
+  }, [dispatch, isPage]);
 
   const paginatedResponse = useAppSelector(
     (state: RootState) =>
@@ -39,6 +40,10 @@ export function EmployeeTable() {
       dispatch(employeeApi.endpoints.deleteEmployee.initiate({ id: index }));
     }
     return;
+  };
+
+  const setPageNumber = (newPageNumber: number) => {
+    setIsPage(newPageNumber);
   };
 
   console.log(paginatedResponse);
@@ -99,7 +104,10 @@ export function EmployeeTable() {
             ))}
         </TableBody>
       </Table>
-      <PaginationLinks data={paginatedResponse?.pagination} />
+      <PaginationLinks
+        data={paginatedResponse?.pagination}
+        setPageNumber={setPageNumber}
+      />
     </>
   );
 }
