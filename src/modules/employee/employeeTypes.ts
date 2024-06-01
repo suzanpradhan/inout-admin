@@ -10,22 +10,19 @@ export const employeeSchema = z.object({
 });
 export type EmployeeDetailType = z.infer<typeof employeeSchema>;
 
-// export interface EmployeeFormType {
-//     id?: number;
-//     order?: string;
-//     fullname?: string;
-//     is_staff?: boolean;
-// }
-
 export const employeeDeleteDetailSchema = z.object({
     id: z.number().optional(),
 });
 export type EmployeeDeleteDetailSchema = z.infer<typeof employeeDeleteDetailSchema>;
 
+export interface OrderType {
+    id: number;
+    order: number;
+}
+
 export interface EmployeeDeleteFormType {
     id: number;
 }
-
 
 interface EmployeePosition {
     id: number;

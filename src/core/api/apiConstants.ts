@@ -30,5 +30,6 @@ export const apiPaths = {
     userRoleUrl: '/user-permissions',
     permissionsUrl: '/permissions',
     employeesUrl: '/employees',
+    employeesUpdateOrderUrl: '/employees/update_order',
     generalUrl: '/general',
 };

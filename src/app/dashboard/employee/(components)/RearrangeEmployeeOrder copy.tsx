@@ -1,11 +1,8 @@
 'use client';
 import { useAppDispatch } from '@/core/redux/hooks';
-import employeeApi from '@/modules/employee/employeeApi';
 import React, { useState } from 'react';
 import { GrDrag } from 'react-icons/gr';
-import { toast } from 'react-toastify';
 import DropArea from './(common)/DropArea';
-
 interface Employee {
   id: number;
   orderNumber: number;
@@ -79,6 +76,51 @@ const employees: Employee[] = [
     fullname: 'Abigail Young',
     position: 'Technician',
   },
+  // { id: 31, orderNumber: 31, fullname: 'Mason Green', position: 'Counselor' },
+  // { id: 32, orderNumber: 32, fullname: 'Charlotte Hill', position: 'Auditor' },
+  // { id: 33, orderNumber: 33, fullname: 'Liam Baker', position: 'Developer' },
+  // { id: 34, orderNumber: 34, fullname: 'Ava Adams', position: 'Manager' },
+  // { id: 35, orderNumber: 35, fullname: 'Noah Ward', position: 'Teacher' },
+  // {
+  //   id: 36,
+  //   orderNumber: 36,
+  //   fullname: 'Elizabeth King',
+  //   position: 'Accountant',
+  // },
+  // {
+  //   id: 37,
+  //   orderNumber: 37,
+  //   fullname: 'William Hughes',
+  //   position: 'Principal',
+  // },
+  // { id: 38, orderNumber: 38, fullname: 'Sofia Foster', position: 'Engineer' },
+  // { id: 39, orderNumber: 39, fullname: 'Ethan Russell', position: 'Designer' },
+  // { id: 40, orderNumber: 40, fullname: 'Grace Coleman', position: 'Analyst' },
+  // {
+  //   id: 41,
+  //   orderNumber: 41,
+  //   fullname: 'Michael Morris',
+  //   position: 'Supervisor',
+  // },
+  // { id: 42, orderNumber: 42, fullname: 'Avery Diaz', position: 'Specialist' },
+  // { id: 43, orderNumber: 43, fullname: 'Ella Bailey', position: 'Coordinator' },
+  // {
+  //   id: 44,
+  //   orderNumber: 44,
+  //   fullname: 'Matthew Powell',
+  //   position: 'Assistant',
+  // },
+  // {
+  //   id: 45,
+  //   orderNumber: 45,
+  //   fullname: 'Scarlett Murphy',
+  //   position: 'Technician',
+  // },
+  // { id: 46, orderNumber: 46, fullname: 'David Ward', position: 'Counselor' },
+  // { id: 47, orderNumber: 47, fullname: 'Madison Carter', position: 'Auditor' },
+  // { id: 48, orderNumber: 48, fullname: 'James Stewart', position: 'Developer' },
+  // { id: 49, orderNumber: 49, fullname: 'Sophia Perry', position: 'Manager' },
+  // { id: 50, orderNumber: 50, fullname: 'Eva Bennett', position: 'Teacher' },
 ];
 
 interface SwitchAction {
@@ -92,7 +134,7 @@ const RearrangeEmployeeOrder = () => {
   const [switchActions, setSwitchActions] = useState<SwitchAction[]>([]);
   const [employeeList, setEmployeeList] = useState<Employee[]>(employees);
   const [activeCard, setActiveCard] = useState<number | null>(null);
-  const rowPerCols: number = 5;
+  const rowPerC0ols: number = 5;
 
   const onDrop = (position: number) => {
     if (activeCard == null) return;
@@ -118,56 +160,43 @@ const RearrangeEmployeeOrder = () => {
       };
 
       setSwitchActions((prevActions) => [...prevActions, newSwitchAction]);
+      // setSwitchActions(() => [newSwitchAction]);
 
       setEmployeeList(updatedEmployeeList);
     }
   };
 
-  const updateData = async () => {
-    setIsLoading(true);
-    try {
-      const responseData = await dispatch(
-        employeeApi.endpoints.updateOrder.initiate(switchActions)
-      );
-      setIsLoading(false);
-      // Optionally, handle the response if needed
-      // console.log('Update successful:', responseData);
-      // toast.success('Employee order updated.');
-    } catch (error) {
-      setIsLoading(false);
-      console.error('Update failed:', error);
-      toast.error('Failed updating employee order.');
-    }
-  };
-
-  console.log(switchActions);
-
   return (
     <div className="h-max overflow-x-scroll p-4">
       <div className="flex space-x-4">
         <h2>Active card: {activeCard}</h2>
-        <button onClick={updateData}>update</button>
+        {/* <button onClick={updateData}>update</button> */}
         {Array.from(
-          { length: Math.ceil(employeeList.length / rowPerCols) },
+          { length: Math.ceil(employeeList.length / rowPerC0ols) },
           (_, columnIndex) => (
             <div
               key={columnIndex}
               className="flex flex-col space-y-2 flex-none"
             >
-              <DropArea onDrop={() => onDrop(columnIndex * rowPerCols)} />
+              {/* <DropArea onDrop={() => onDrop(columnIndex * rowPerC0ols)} /> */}
               {employeeList
-                .slice(columnIndex * rowPerCols, (columnIndex + 1) * rowPerCols)
+                .slice(
+                  columnIndex * rowPerC0ols,
+                  (columnIndex + 1) * rowPerC0ols
+                )
                 .map((subItem, subIndex) => (
                   <React.Fragment key={`${columnIndex}-${subIndex}`}>
                     <DropArea
-                      onDrop={() => onDrop(columnIndex * rowPerCols + subIndex)}
+                      onDrop={() =>
+                        onDrop(columnIndex * rowPerC0ols + subIndex)
+                      }
                     />
                     <div
                       key={`${columnIndex}-${subIndex}`}
                       className="bg-gray-200 p-2 w-80 flex items-center gap-2 rounded-md hover:cursor-move active:opacity-45"
                       draggable
                       onDragStart={() =>
-                        setActiveCard(columnIndex * rowPerCols + subIndex)
+                        setActiveCard(columnIndex * rowPerC0ols + subIndex)
                       }
                       onDragEnd={() => setActiveCard(null)}
                     >
@@ -175,7 +204,7 @@ const RearrangeEmployeeOrder = () => {
                         <GrDrag size={18} className="text-slate-500" />
                       </div>
                       <div className="flex justify-center items-center text-xl w-10 h-10 bg-slate-300 rounded-lg">
-                        {columnIndex * rowPerCols + subIndex + 1}
+                        {columnIndex * rowPerC0ols + subIndex + 1}
                       </div>
                       <div>
                         <h3 className="text-base font-semibold text-slate-700">

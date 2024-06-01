@@ -1,7 +1,6 @@
 import { IoPersonAddOutline } from 'react-icons/io5';
 import { AsideEmployeeSheet } from '../(components)/(common)/AsideEmployeeSheet';
 import { CreateEmployeeForm } from './(components)/(common)/CreateEmployeeForm';
-import { EmployeeTable } from './(components)/EmployeeTable';
 import RearrangeEmployeeOrder from './(components)/RearrangeEmployeeOrder';
 
 export default function EmployeeList() {
@@ -26,7 +25,7 @@ export default function EmployeeList() {
             </AsideEmployeeSheet>
           </h4>
           <div className="bg-slate-50 rounded-md shadow-md px-5 py-4">
-            <EmployeeTable />
+            {/* <EmployeeTable /> */}
           </div>
         </div>
       </div>
