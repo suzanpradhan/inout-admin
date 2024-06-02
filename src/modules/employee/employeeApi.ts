@@ -28,6 +28,26 @@ const employeeApi = baseApi
                     return response as PaginatedResponseType<EmployeeDataType>;
                 },
             }),
+            getAllEmployees: builder.query<EmployeeDataType[], void>({
+                query: () => `${apiPaths.allEmployeesUrl}`,
+                providesTags: (response) =>
+                    response
+                        ? [
+                            ...response.map(({ id }) => ({ type: 'Employees', id } as const)),
+                            { type: 'Employees', id: 'LIST' },
+                        ]
+                        : [{ type: 'Employees', id: 'LIST' }],
+                serializeQueryArgs: ({ endpointName }) => {
+                    return endpointName;
+                },
+                forceRefetch({ currentArg, previousArg }) {
+                    return currentArg !== previousArg;
+                },
+                transformResponse: (response: any) => {
+                    // console.log(response);
+                    return response as EmployeeDataType[];
+                },
+            }),
             postEmployee: builder.mutation<EmployeeDataType, EmployeeDetailType>({
                 query: ({ ...payload }) => {
                     var formData = new FormData();

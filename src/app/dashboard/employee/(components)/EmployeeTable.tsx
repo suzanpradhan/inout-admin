@@ -25,9 +25,18 @@ import { UpdateEmployeeForm } from './(common)/UpdateEmployeeForm';
 
 export function EmployeeTable() {
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const [isPage, setIsPage] = useState(1);
   useEffect(() => {
-    dispatch(employeeApi.endpoints.getEmployees.initiate(isPage));
+    setIsLoading(true);
+    dispatch(employeeApi.endpoints.getEmployees.initiate(isPage))
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        console.error('Error fetching employees:', error);
+      });
   }, [dispatch, isPage]);
 
   const paginatedResponse = useAppSelector(
@@ -47,70 +56,97 @@ export function EmployeeTable() {
     setIsPage(newPageNumber);
   };
 
-  console.log(paginatedResponse);
+  // console.log(paginatedResponse);
   return (
     <>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">S.N.</TableHead>
-            <TableHead className="w-[100px]">Order by</TableHead>
-            <TableHead>Fullname</TableHead>
-            <TableHead>Position</TableHead>
-            <TableHead className="text-right">Status</TableHead>
-            <TableHead className="text-right">
-              {/* {JSON.stringify(employeeList)} */}
-              Action
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {paginatedResponse?.results &&
-            paginatedResponse.results.map((employee, index) => (
-              <TableRow key={index}>
-                <TableCell className="font-medium">{index + 1}</TableCell>
-                <TableCell className="font-medium">{employee.order}</TableCell>
-                <TableCell>{employee.fullname}</TableCell>
-                <TableCell>
-                  {employee.positions?.map((pos) => pos.name)}
-                </TableCell>
-                <TableCell className="text-right">
-                  <Badge variant={employee.status ? 'default' : 'destructive'}>
-                    {employee.status ? 'In' : 'Out'}
-                  </Badge>
-                </TableCell>
-                <TableCell className="flex items-center justify-end gap-2">
-                  <AsideEmployeeSheet
-                    btnClassName="text-slate-400 hover:bg-yellow-100"
-                    btnLable={<CiEdit />}
-                    btnVariant="outline"
-                    btnSize="icon"
-                    sheetTitle="Update Employee"
-                    sheetDesc="Make changes to Employee. Click save when youre done."
-                  >
-                    <UpdateEmployeeForm data={employee} />
-                  </AsideEmployeeSheet>
-                  <AlertDeleteDialog
-                    handleClick={handleDelete}
-                    uid={employee.id!}
-                  >
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="text-red-400 hover:bg-red-100"
-                    >
-                      <CiTrash />
-                    </Button>
-                  </AlertDeleteDialog>
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-      <PaginationLinks
-        data={paginatedResponse?.pagination}
-        setPageNumber={setPageNumber}
-      />
+      {!isLoading ? (
+        paginatedResponse && paginatedResponse.results.length > 0 ? (
+          <>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">S.N.</TableHead>
+                  <TableHead className="w-[100px]">Emp. ID</TableHead>
+                  <TableHead className="w-[100px]">Order by</TableHead>
+                  <TableHead>Fullname</TableHead>
+                  <TableHead>Position</TableHead>
+                  <TableHead className="text-right">Status</TableHead>
+                  <TableHead className="text-right">
+                    {/* {JSON.stringify(employeeList)} */}
+                    Action
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {paginatedResponse?.results &&
+                  paginatedResponse.results.map((employee, index) => (
+                    <TableRow key={index}>
+                      <TableCell className="font-medium">{index + 1}</TableCell>
+                      <TableCell className="font-medium">
+                        {employee.id}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {employee.order}
+                      </TableCell>
+                      <TableCell>{employee.fullname}</TableCell>
+                      <TableCell>
+                        {employee.positions?.map((pos) => pos.name)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Badge
+                          variant={employee.status ? 'default' : 'destructive'}
+                        >
+                          {employee.status ? 'In' : 'Out'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="flex items-center justify-end gap-2">
+                        <AsideEmployeeSheet
+                          btnClassName="text-slate-400 hover:bg-yellow-100"
+                          btnLable={<CiEdit />}
+                          btnVariant="outline"
+                          btnSize="icon"
+                          sheetTitle="Update Employee"
+                          sheetDesc="Make changes to Employee. Click save when youre done."
+                        >
+                          <UpdateEmployeeForm data={employee} />
+                        </AsideEmployeeSheet>
+                        <AlertDeleteDialog
+                          handleClick={handleDelete}
+                          uid={employee.id!}
+                        >
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="text-red-400 hover:bg-red-100"
+                          >
+                            <CiTrash />
+                          </Button>
+                        </AlertDeleteDialog>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+            <PaginationLinks
+              data={paginatedResponse?.pagination}
+              setPageNumber={setPageNumber}
+            />
+          </>
+        ) : (
+          <p className="text-md font-bold text-slate-900 text-center">
+            !No Data Found!
+          </p>
+        )
+      ) : (
+        <p className="text-md font-bold text-slate-900 text-center">
+          <div className="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </p>
+      )}
     </>
   );
 }

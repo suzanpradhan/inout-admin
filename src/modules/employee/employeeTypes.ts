@@ -30,7 +30,7 @@ interface EmployeePosition {
 }
 
 export interface EmployeeDataType {
-    id?: number;
+    id: number;
     order?: number;
     fullname?: string;
     positions?: EmployeePosition[];

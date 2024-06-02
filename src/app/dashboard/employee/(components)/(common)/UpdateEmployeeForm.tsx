@@ -125,7 +125,7 @@ export function UpdateEmployeeForm({ data }: { data: EmployeeDataType }) {
             <div></div>
           </div>
         ) : (
-          'Create New Employee'
+          'Update Employee'
         )}
       </Button>
     </form>

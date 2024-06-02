@@ -1,4 +1,4 @@
-import { LoginFormShdcn } from '@/app/@auth/(components)/LoginFormShdcn';
+import { LoginForm } from '@/app/@auth/(components)/LoginForm';
 import {
   Card,
   CardContent,
@@ -16,7 +16,7 @@ export default function LoginPage() {
           <CardDescription>Please enter your credentials</CardDescription>
         </CardHeader>
         <CardContent>
-          <LoginFormShdcn />
+          <LoginForm />
         </CardContent>
       </Card>
     </div>
