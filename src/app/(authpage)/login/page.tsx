@@ -1,4 +1,4 @@
-import { LoginForm } from '@/app/@auth/(components)/LoginForm';
+import { LoginForm } from '@/app/(components)/LoginForm';
 import {
   Card,
   CardContent,
