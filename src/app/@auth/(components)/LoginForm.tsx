@@ -4,7 +4,6 @@ import { ZodError, z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useAppDispatch } from '@/core/redux/hooks';
 import { nonempty } from '@/core/utils/formUtils';
 import { useFormik } from 'formik';
 import { signIn } from 'next-auth/react';
@@ -20,7 +19,6 @@ const loginFormSchema = z.object({
 type LoginRequestType = z.infer<typeof loginFormSchema>;
 
 export function LoginForm() {
-  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
