@@ -32,7 +32,7 @@ export function UpdateEmployeeForm({ data }: { data: EmployeeDataType }) {
   const onSubmit = async (formData: EmployeeDetailType) => {
     setIsLoading(true);
     try {
-      const responseData = await Promise.resolve(
+      await Promise.resolve(
         dispatch(employeeApi.endpoints.updateEmployee.initiate(formData))
       );
       setIsLoading(false);
@@ -49,6 +49,7 @@ export function UpdateEmployeeForm({ data }: { data: EmployeeDataType }) {
       order: data.order,
       fullname: data.fullname ?? '',
       is_staff: data.is_staff,
+      is_attend: data.is_attend ?? false,
     },
     validateOnChange: false,
     validate: validateForm,

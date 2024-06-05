@@ -10,12 +10,12 @@ export default function dashboardLayout({
     <div id="main-wrapper">
       <section className="wrapper">
         <AppSidebar />
-        <div className="relative ml-64">
+        <div className="relative ml-0 transition-transform md:ml-64">
           <AppBar />
           <div className="h-screen">
             <div
               id="site-content"
-              className="h-full bg-white text-slate-900 py-24 px-5 overflow-y-scroll"
+              className="h-full bg-white text-slate-900 pt-28 pb-28 md:py-24 px-5 overflow-y-scroll"
             >
               {children}
             </div>

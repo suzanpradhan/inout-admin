@@ -6,7 +6,8 @@ export const employeeSchema = z.object({
     fullname: z.string().min(4, {
         message: 'Fullname must be at least 4 characters.',
     }),
-    is_staff: z.boolean().optional().default(true),
+    is_staff: z.boolean().default(true),
+    is_attend: z.boolean().default(false),
 });
 export type EmployeeDetailType = z.infer<typeof employeeSchema>;
 
@@ -14,6 +15,12 @@ export const employeeDeleteDetailSchema = z.object({
     id: z.number().optional(),
 });
 export type EmployeeDeleteDetailSchema = z.infer<typeof employeeDeleteDetailSchema>;
+
+export const employeeStatusSchema = z.object({
+    id: z.number(),
+    is_attend: z.boolean(),
+});
+export type EmployeeStatusType = z.infer<typeof employeeStatusSchema>;
 
 export interface OrderType {
     id: number;
@@ -35,7 +42,7 @@ export interface EmployeeDataType {
     fullname?: string;
     positions?: EmployeePosition[];
     is_staff: boolean;
-    status?: boolean;
+    is_attend?: boolean;
     created_by?: number;
     modified_by?: number;
     created_on?: string;

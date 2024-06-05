@@ -1,6 +1,7 @@
 'use client';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import {
   Table,
   TableBody,
@@ -26,6 +27,7 @@ import { UpdateEmployeeForm } from './(common)/UpdateEmployeeForm';
 export function EmployeeTable() {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [updateChecked, setUpdateChecked] = useState(false);
   const [isPage, setIsPage] = useState(1);
   useEffect(() => {
     setIsLoading(true);
@@ -52,6 +54,21 @@ export function EmployeeTable() {
     return;
   };
 
+  const onChangedStatus = async (index: number, boolean: boolean) => {
+    try {
+      await Promise.resolve(
+        dispatch(
+          employeeApi.endpoints.updateStatus.initiate({
+            id: index,
+            is_attend: boolean,
+          })
+        )
+      );
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
+
   const setPageNumber = (newPageNumber: number) => {
     setIsPage(newPageNumber);
   };
@@ -71,7 +88,7 @@ export function EmployeeTable() {
                   <TableHead>Fullname</TableHead>
                   <TableHead>Position</TableHead>
                   <TableHead className="text-right">Status</TableHead>
-                  <TableHead className="text-right">
+                  <TableHead className="w-[200px] text-center">
                     {/* {JSON.stringify(employeeList)} */}
                     Action
                   </TableHead>
@@ -94,9 +111,11 @@ export function EmployeeTable() {
                       </TableCell>
                       <TableCell className="text-right">
                         <Badge
-                          variant={employee.status ? 'default' : 'destructive'}
+                          variant={
+                            employee.is_attend ? 'default' : 'destructive'
+                          }
                         >
-                          {employee.status ? 'In' : 'Out'}
+                          {employee.is_attend ? 'In' : 'Out'}
                         </Badge>
                       </TableCell>
                       <TableCell className="flex items-center justify-end gap-2">
@@ -122,6 +141,12 @@ export function EmployeeTable() {
                             <CiTrash />
                           </Button>
                         </AlertDeleteDialog>
+                        <Switch
+                          checked={employee.is_attend}
+                          onCheckedChange={(val) => {
+                            onChangedStatus(employee.id, val);
+                          }}
+                        />
                       </TableCell>
                     </TableRow>
                   ))}

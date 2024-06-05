@@ -31,7 +31,7 @@ export function CreateEmployeeForm() {
   const onSubmit = async (data: EmployeeDetailType) => {
     setIsLoading(true);
     try {
-      const responseData = await Promise.resolve(
+      await Promise.resolve(
         dispatch(employeeApi.endpoints.postEmployee.initiate(data))
       );
       setIsLoading(false);
@@ -47,6 +47,7 @@ export function CreateEmployeeForm() {
       order: undefined,
       fullname: '',
       is_staff: true,
+      is_attend: false,
     },
     validateOnChange: false,
     validate: validateForm,

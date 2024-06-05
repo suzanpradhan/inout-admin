@@ -96,7 +96,7 @@ const RearrangeEmployeeOrder = () => {
   const [switchActions, setSwitchActions] = useState<SwitchAction[]>([]);
   const [employeeList, setEmployeeList] = useState<EmployeeDataType[]>([]);
   const [activeCard, setActiveCard] = useState<number | null>(null);
-  const rowPerCols: number = 5;
+  const rowPerCols: number = 10;
 
   const getAllEmployeesResponse = useAppSelector(
     (state: RootState) =>
@@ -116,18 +116,6 @@ const RearrangeEmployeeOrder = () => {
       });
     setEmployeeList(getAllEmployeesResponse);
   }, [dispatch, getAllEmployeesResponse]);
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   dispatch(employeeApi.endpoints.getEmployees.initiate(isPage))
-  //     .then(() => {
-  //       setIsLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       setIsLoading(false);
-  //       console.error('Error fetching employees:', error);
-  //     });
-  // }, [dispatch, isPage]);
 
   // Drop function
   const onDrop = (position: number) => {
@@ -159,12 +147,6 @@ const RearrangeEmployeeOrder = () => {
         id: currentPositionedObject.id,
         order: draggedIndex,
       };
-
-      // setSwitchActions((prevActions) => [
-      //   ...prevActions,
-      //   dragedPositionAction,
-      //   currentPositionAction,
-      // ]);
 
       setSwitchActions((prevActions) => {
         // Check if there are any matching id
@@ -223,7 +205,7 @@ const RearrangeEmployeeOrder = () => {
         scrollContainer.removeEventListener('wheel', handleWheel);
       };
     }
-  }, []);
+  }, [scrollContainerRef]);
 
   return (
     <>

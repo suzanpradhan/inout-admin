@@ -41,7 +41,7 @@ export function SettingsForm() {
   const onSubmit = async (data: SettingsDetailType) => {
     setIsLoading(true);
     try {
-      const responseData = await Promise.resolve(
+      await Promise.resolve(
         dispatch(generalApi.endpoints.updateGeneral.initiate(data))
       );
       setIsLoading(false);

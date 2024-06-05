@@ -2,7 +2,7 @@ import { apiPaths } from '@/core/api/apiConstants';
 import { baseApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { toast } from 'react-toastify';
-import { EmployeeDataType, EmployeeDeleteFormType, EmployeeDetailType, OrderType } from './employeeTypes';
+import { EmployeeDataType, EmployeeDeleteFormType, EmployeeDetailType, EmployeeStatusType, OrderType } from './employeeTypes';
 
 const employeeApi = baseApi
     .enhanceEndpoints({ addTagTypes: ['Employees'] })
@@ -78,7 +78,25 @@ const employeeApi = baseApi
             }),
             updateEmployee: builder.mutation<EmployeeDataType, EmployeeDetailType>({
                 query: ({ ...payload }) => ({
-                    url: `${apiPaths.employeesUrl}/${payload.id}/`,
+                    url: `${apiPaths.employeesUrl}/${payload.id}/refresh/`,
+                    method: 'PATCH',
+                    body: payload,
+                }),
+                async onQueryStarted(payload, { queryFulfilled }) {
+                    try {
+                        await queryFulfilled;
+                        toast.success('Employee updated.');
+                    } catch (err) {
+                        console.log(err);
+                        // toast.error();
+                        toast.error('Failed updating employee.');
+                    }
+                },
+                invalidatesTags: (result, error, { id }) => [{ type: 'Employees', id }],
+            }),
+            updateStatus: builder.mutation<EmployeeDataType, EmployeeStatusType>({
+                query: ({ ...payload }) => ({
+                    url: `${apiPaths.employeesUrl}/${payload.id}/refresh/`,
                     method: 'PATCH',
                     body: payload,
                 }),

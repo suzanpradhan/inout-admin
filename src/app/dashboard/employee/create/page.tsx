@@ -9,7 +9,7 @@ export default function EmployeeCreate() {
         Create Employee
       </h3>
       <div className="grid grid-cols-12 gap-y-3 gap-x-10">
-        <div className="col-span-8">
+        <div className="col-span-12 md:col-span-8">
           <h4 className="text-md font-medium text-slate-400 mb-4">
             Add new employee in the system
           </h4>
@@ -17,7 +17,7 @@ export default function EmployeeCreate() {
             <CreateEmployeeForm />
           </div>
         </div>
-        <div className="col-span-4">
+        <div className="md:hidden col-span-4">
           <h4 className="text-md font-medium text-slate-400 mb-4">
             {/* Recent employee activities */}
           </h4>
