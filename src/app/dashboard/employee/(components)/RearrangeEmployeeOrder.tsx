@@ -1,5 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { useAppDispatch, useAppSelector } from '@/core/redux/hooks';
 import { RootState } from '@/core/redux/store';
 import employeeApi from '@/modules/employee/employeeApi';
@@ -96,7 +97,7 @@ const RearrangeEmployeeOrder = () => {
   const [switchActions, setSwitchActions] = useState<SwitchAction[]>([]);
   const [employeeList, setEmployeeList] = useState<EmployeeDataType[]>([]);
   const [activeCard, setActiveCard] = useState<number | null>(null);
-  const rowPerCols: number = 10;
+  const [rowPerCols, setRowPerCols] = useState<number>(10);
 
   const getAllEmployeesResponse = useAppSelector(
     (state: RootState) =>
@@ -211,18 +212,40 @@ const RearrangeEmployeeOrder = () => {
     <>
       <h4 className="text-md font-medium text-slate-400 mb-4 flex justify-between items-center">
         Drag and drop to rearrange employee order
-        <Button onClick={updateData} variant={'default'} size={'sm'}>
-          {isLoading ? (
-            <div className="lds-ellipsis">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-          ) : (
-            'Update Order'
-          )}
-        </Button>
+        <div className="flex justify-evenly items-center gap-5">
+          <span>No. per row</span>
+          <Separator orientation="vertical" className="h-10" />
+          <div className="flex justify-center items-center gap-2">
+            <Button
+              variant={'outline'}
+              size={'icon'}
+              onClick={() => setRowPerCols(rowPerCols - 1)}
+            >
+              -
+            </Button>
+            <span>{rowPerCols}</span>
+            <Button
+              variant={'outline'}
+              size={'icon'}
+              onClick={() => setRowPerCols(rowPerCols + 1)}
+            >
+              +
+            </Button>
+          </div>
+          <Separator orientation="vertical" className="h-10" />
+          <Button onClick={updateData} variant={'default'} size={'sm'}>
+            {isLoading ? (
+              <div className="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            ) : (
+              'Update Order'
+            )}
+          </Button>
+        </div>
       </h4>
       <div className="bg-slate-50 rounded-md shadow-md p-4">
         <div className="h-max overflow-x-scroll pb-4" ref={scrollContainerRef}>
