@@ -99,6 +99,12 @@ const RearrangeEmployeeOrder = () => {
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [rowPerCols, setRowPerCols] = useState<number>(10);
 
+  const sectionRef = useRef(null);
+
+  const scrollToSection = (ref) => {
+    ref.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const getAllEmployeesResponse = useAppSelector(
     (state: RootState) =>
       state.baseApi.queries[`getAllEmployees`]?.data as EmployeeDataType[]
@@ -210,8 +216,21 @@ const RearrangeEmployeeOrder = () => {
 
   return (
     <>
-      <h4 className="text-md font-medium text-slate-400 mb-4 flex justify-between items-center">
-        Drag and drop to rearrange employee order
+      <h4
+        className="text-md font-medium text-slate-400 mb-4 flex justify-between items-center"
+        ref={sectionRef}
+      >
+        <p>
+          Drag and drop to rearrange employee order{' '}
+          <Button
+            variant={'link'}
+            className="p-0"
+            onClick={() => scrollToSection(sectionRef)}
+          >
+            try
+          </Button>
+        </p>
+
         <div className="flex justify-evenly items-center gap-5">
           <span>No. per row</span>
           <Separator orientation="vertical" className="h-10" />

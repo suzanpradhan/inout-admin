@@ -1,3 +1,4 @@
+import { Separator } from '@/components/ui/separator';
 import { IoPersonAddOutline } from 'react-icons/io5';
 import { AsideEmployeeSheet } from '../(components)/(common)/AsideEmployeeSheet';
 import { CreateEmployeeForm } from './(components)/(common)/CreateEmployeeForm';
@@ -30,6 +31,7 @@ export default function EmployeeList() {
           </div>
         </div>
       </div>
+      <Separator className="my-10" />
       <div className="grid grid-cols-12 gap-y-3 gap-x-10 mb-10">
         <div className="col-span-12">
           <RearrangeEmployeeOrder />
