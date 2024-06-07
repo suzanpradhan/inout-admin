@@ -99,10 +99,10 @@ const RearrangeEmployeeOrder = () => {
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [rowPerCols, setRowPerCols] = useState<number>(10);
 
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-  const scrollToSection = (ref) => {
-    ref.current.scrollIntoView({ behavior: 'smooth' });
+  const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const getAllEmployeesResponse = useAppSelector(
@@ -216,130 +216,135 @@ const RearrangeEmployeeOrder = () => {
 
   return (
     <>
-      <h4
-        className="text-md font-medium text-slate-400 mb-4 flex justify-between items-center"
-        ref={sectionRef}
-      >
-        <p>
-          Drag and drop to rearrange employee order{' '}
-          <Button
-            variant={'link'}
-            className="p-0"
-            onClick={() => scrollToSection(sectionRef)}
-          >
-            try
-          </Button>
-        </p>
+      <div ref={sectionRef}>
+        <h4 className="text-md font-medium text-slate-400 mb-4 flex justify-between items-center">
+          <p>
+            Drag and drop to rearrange employee order{' '}
+            <Button
+              variant={'link'}
+              className="p-0"
+              onClick={() => sectionRef && scrollToSection(sectionRef)}
+            >
+              try
+            </Button>
+          </p>
 
-        <div className="flex justify-evenly items-center gap-5">
-          <span>No. per row</span>
-          <Separator orientation="vertical" className="h-10" />
-          <div className="flex justify-center items-center gap-2">
-            <Button
-              variant={'outline'}
-              size={'icon'}
-              onClick={() => setRowPerCols(rowPerCols - 1)}
-            >
-              -
-            </Button>
-            <span>{rowPerCols}</span>
-            <Button
-              variant={'outline'}
-              size={'icon'}
-              onClick={() => setRowPerCols(rowPerCols + 1)}
-            >
-              +
-            </Button>
-          </div>
-          <Separator orientation="vertical" className="h-10" />
-          <Button onClick={updateData} variant={'default'} size={'sm'}>
-            {isLoading ? (
-              <div className="lds-ellipsis">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-              </div>
-            ) : (
-              'Update Order'
-            )}
-          </Button>
-        </div>
-      </h4>
-      <div className="bg-slate-50 rounded-md shadow-md p-4">
-        <div className="h-max overflow-x-scroll pb-4" ref={scrollContainerRef}>
-          <div className="flex space-x-4">
-            {!isLoading ? (
-              employeeList && employeeList.length > 0 ? (
-                Array.from(
-                  { length: Math.ceil(employeeList.length / rowPerCols) },
-                  (_, columnIndex) => (
-                    <div
-                      key={columnIndex}
-                      className="flex flex-col space-y-2 flex-none"
-                    >
-                      <DropArea
-                        onDrop={() => onDrop(columnIndex * rowPerCols)}
-                      />
-                      {employeeList
-                        .slice(
-                          columnIndex * rowPerCols,
-                          (columnIndex + 1) * rowPerCols
-                        )
-                        .map((subItem, subIndex) => (
-                          <React.Fragment key={`${columnIndex}-${subIndex}`}>
-                            <DropArea
-                              onDrop={() =>
-                                onDrop(columnIndex * rowPerCols + subIndex)
-                              }
-                            />
-                            <div
-                              key={`${columnIndex}-${subIndex}`}
-                              className="bg-gray-200 p-2 w-80 flex items-center gap-2 rounded-md hover:cursor-move active:opacity-45"
-                              draggable
-                              onDragStart={() =>
-                                setActiveCard(
-                                  columnIndex * rowPerCols + subIndex
-                                )
-                              }
-                              onDragEnd={() => setActiveCard(null)}
-                            >
-                              <div className="flex justify-center items-center text-xl w-5 h-10 bg-slate-300 rounded-sm">
-                                <GrDrag size={18} className="text-slate-500" />
-                              </div>
-                              <div className="flex justify-center items-center text-xl w-10 h-10 bg-slate-300 rounded-lg">
-                                {/* {columnIndex * rowPerCols + subIndex + 1} */}
-                                {subItem.order}
-                              </div>
-                              <div>
-                                <h3 className="text-base font-semibold text-slate-700">
-                                  {subItem.fullname} | empId: {subItem.id}
-                                </h3>
-                                <p className="text-xs text-slate-500">
-                                  {subItem.positions?.map((pos) => pos.name)}
-                                </p>
-                              </div>
-                            </div>
-                          </React.Fragment>
-                        ))}
-                    </div>
-                  )
-                )
-              ) : (
-                <p className="text-md font-bold text-slate-900 text-center">
-                  !No Data Found!
-                </p>
-              )
-            ) : (
-              <p className="text-md font-bold text-slate-900 text-center">
+          <div className="flex justify-evenly items-center gap-5">
+            <span>No. per row</span>
+            <Separator orientation="vertical" className="h-10" />
+            <div className="flex justify-center items-center gap-2">
+              <Button
+                variant={'outline'}
+                size={'icon'}
+                onClick={() => setRowPerCols(rowPerCols - 1)}
+              >
+                -
+              </Button>
+              <span>{rowPerCols}</span>
+              <Button
+                variant={'outline'}
+                size={'icon'}
+                onClick={() => setRowPerCols(rowPerCols + 1)}
+              >
+                +
+              </Button>
+            </div>
+            <Separator orientation="vertical" className="h-10" />
+            <Button onClick={updateData} variant={'default'} size={'sm'}>
+              {isLoading ? (
                 <div className="lds-ellipsis">
                   <div></div>
                   <div></div>
                   <div></div>
                   <div></div>
                 </div>
-              </p>
-            )}
+              ) : (
+                'Update Order'
+              )}
+            </Button>
+          </div>
+        </h4>
+        <div className="bg-slate-50 rounded-md shadow-md p-4">
+          <div
+            className="h-max overflow-x-scroll pb-4"
+            ref={scrollContainerRef}
+          >
+            <div className="flex space-x-4">
+              {!isLoading ? (
+                employeeList && employeeList.length > 0 ? (
+                  Array.from(
+                    { length: Math.ceil(employeeList.length / rowPerCols) },
+                    (_, columnIndex) => (
+                      <div
+                        key={columnIndex}
+                        className="flex flex-col space-y-2 flex-none"
+                      >
+                        <DropArea
+                          onDrop={() => onDrop(columnIndex * rowPerCols)}
+                        />
+                        {employeeList
+                          .slice(
+                            columnIndex * rowPerCols,
+                            (columnIndex + 1) * rowPerCols
+                          )
+                          .map((subItem, subIndex) => (
+                            <React.Fragment key={`${columnIndex}-${subIndex}`}>
+                              <DropArea
+                                onDrop={() =>
+                                  onDrop(columnIndex * rowPerCols + subIndex)
+                                }
+                              />
+                              <div
+                                key={`${columnIndex}-${subIndex}`}
+                                className="bg-gray-200 p-2 w-80 flex items-center gap-2 rounded-md hover:cursor-move active:opacity-45"
+                                draggable
+                                onDragStart={() =>
+                                  setActiveCard(
+                                    columnIndex * rowPerCols + subIndex
+                                  )
+                                }
+                                onDragEnd={() => setActiveCard(null)}
+                              >
+                                <div className="flex justify-center items-center text-xl w-5 h-10 bg-slate-300 rounded-sm">
+                                  <GrDrag
+                                    size={18}
+                                    className="text-slate-500"
+                                  />
+                                </div>
+                                <div className="flex justify-center items-center text-xl w-10 h-10 bg-slate-300 rounded-lg">
+                                  {/* {columnIndex * rowPerCols + subIndex + 1} */}
+                                  {subItem.order}
+                                </div>
+                                <div>
+                                  <h3 className="text-base font-semibold text-slate-700">
+                                    {subItem.fullname} | empId: {subItem.id}
+                                  </h3>
+                                  <p className="text-xs text-slate-500">
+                                    {subItem.positions?.map((pos) => pos.name)}
+                                  </p>
+                                </div>
+                              </div>
+                            </React.Fragment>
+                          ))}
+                      </div>
+                    )
+                  )
+                ) : (
+                  <p className="text-md font-bold text-slate-900 text-center">
+                    !No Data Found!
+                  </p>
+                )
+              ) : (
+                <p className="text-md font-bold text-slate-900 text-center">
+                  <div className="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
