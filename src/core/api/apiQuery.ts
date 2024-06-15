@@ -14,6 +14,7 @@ export const baseApi = createApi({
         'ContentTypes',
         'Users',
         'Profiles',
+        'Employees'
     ],
     endpoints: () => ({}),
 });
